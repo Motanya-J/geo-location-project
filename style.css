@@ -38,6 +38,11 @@ header{
 .logo{
     border: 3px solid #808080;
     padding: 6px;
+
+}
+.logop{
+    
+    color: #000;
 }
 .landingpage{
     font-size: 40px;
@@ -60,11 +65,17 @@ header{
     background-color: #2d4b5a;
     color: #fff;
     border-radius: 110px;
+    cursor: pointer;
+}
+.particles:hover{
+    background-color: #45a049;
 }
 .butclas{
     text-align: center;
 }
-
+a {
+    text-decoration: none;
+}
 
 
 

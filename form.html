@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="form.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="firstdiv">
+          <div class="logo">
+             <a href="index.html"><p class="logop">Geo-Guys</p></a> 
+           
+            
+          </div>
+          <div>
+            <nav>
+              <ul>
+                <li class="vl">Contact us</li>
+                <li class="vl2">My account</li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+<h3>Ad Form</h3>
+
+<div class="container">
+  <form action="/action_page.php">
+    <label for="fname">Company Name</label>
+    <input type="text" id="fname" name="companyname" placeholder="Company Name">
+
+    <label for="lname">Message</label>
+    <input type="text" id="lname" name="Message" placeholder="Ad Message">
+
+    
+    <label for="lname">Link</label>
+    <input type="text" id="lname" name="lastname" placeholder="Link to hosted ad">
+
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+    </form>
+    
+    <br/>
+    <br/>
+    <br/>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+</body>
+</html>
