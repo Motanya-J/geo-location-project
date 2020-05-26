@@ -1,7 +1,7 @@
 
 
 var map;
-var firebase = new Firebase("https://angelic-archery-274517.firebaseio.com");
+
 /**
  * Data object to be written to Firebase.
  */
@@ -92,14 +92,7 @@ function makeInfoBox(controlDiv, map) {
     controlText.innerText = 'Please select a point on map to set geo-location';
     controlUI.appendChild(controlText);
   }
-  // Listen for clicks and add them to the heatmap.
-clicks.orderByChild('timestamp').startAt(startTime).on('child_added',
-function(snapshot) {
-  var newPosition = snapshot.val();
-  var point = new google.maps.LatLng(newPosition.lat, newPosition.lng);
-  heatmap.getData().push(point);
-}
-);
+
 /**
  * Set up a Firebase with deletion on clicks older than expirySeconds
  * @param {!google.maps.visualization.HeatmapLayer} heatmap The heatmap to
@@ -145,5 +138,45 @@ function initFirebase(heatmap) {
       heatmapData.removeAt(i);
     });
   }
+  /**
+       * Updates the last_message/ path with the current timestamp.
+       * @param {function(Date)} addClick After the last message timestamp has been updated,
+       *     this function is called with the current timestamp to add the
+       *     click to the firebase.
+       */
+      function getTimestamp(addClick) {
+        // Reference to location for saving the last click time.
+        var ref = firebase.database().ref('last_message/' + data.sender);
 
+        ref.onDisconnect().remove();  // Delete reference from firebase on disconnect.
+
+        // Set value to timestamp.
+        ref.set(firebase.database.ServerValue.TIMESTAMP, function(err) {
+          if (err) {  // Write to last message was unsuccessful.
+            console.log(err);
+          } else {  // Write to last message was successful.
+            ref.once('value', function(snap) {
+              addClick(snap.val());  // Add click with same timestamp.
+            }, function(err) {
+              console.warn(err);
+            });
+          }
+        });
+      }
+ /**
+       * Adds a click to firebase.
+       * @param {Object} data The data to be added to firebase.
+       *     It contains the lat, lng, sender and timestamp.
+       */
+      function addToFirebase(data) {
+        getTimestamp(function(timestamp) {
+          // Add the new timestamp to the record data.
+          data.timestamp = timestamp;
+          var ref = firebase.database().ref('clicks').push(data, function(err) {
+            if (err) {  // Data was not written to firebase.
+              console.warn(err);
+            }
+          });
+        });
+      }
 
